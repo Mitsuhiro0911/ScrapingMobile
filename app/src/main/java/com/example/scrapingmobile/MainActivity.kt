@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
+import android.widget.EditText
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
@@ -24,15 +25,21 @@ class MainActivity : AppCompatActivity() {
                 val scraping = Scraping(Jsoup.connect(url.text.toString()).get())
                 val checkBoxElement = findViewById<View>(R.id.checkBoxElement) as CheckBox
                 if (checkBoxElement.isChecked) {
-                    scraping.getInfoByElement()
+//                    scraping.getInfoByElement("h2")
+                    val editTextElement = findViewById<View>(R.id.editTextElement) as EditText
+                    scraping.getInfoByElement(editTextElement.text.toString())
                 }
                 val checkBoxAttr = findViewById<View>(R.id.checkBoxAttr) as CheckBox
                 if (checkBoxAttr.isChecked) {
-                    scraping.getInfoByAttr()
+//                    scraping.getInfoByAttr("href")
+                    val editTextAttr = findViewById<View>(R.id.editTextAttr) as EditText
+                    scraping.getInfoByAttr(editTextAttr.text.toString())
                 }
                 val checkBoxId = findViewById<View>(R.id.checkBoxId) as CheckBox
                 if (checkBoxId.isChecked) {
-                    scraping.getInfoById()
+//                    scraping.getInfoById("top")
+                    val editTextId = findViewById<View>(R.id.editTextId) as EditText
+                    scraping.getInfoById(editTextId.text.toString())
                 }
             }
         }
