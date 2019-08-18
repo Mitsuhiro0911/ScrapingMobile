@@ -3,9 +3,9 @@ package com.example.scrapingmobile
 import org.jsoup.nodes.Document
 
 class Scraping(val document:Document) {
-    init {
-        println(document.html())
-    }
+//    init {
+//        println(document.html())
+//    }
     fun getInfoByElement (element:String) {
         // 要素の指定
         val elements = document.select(element)
