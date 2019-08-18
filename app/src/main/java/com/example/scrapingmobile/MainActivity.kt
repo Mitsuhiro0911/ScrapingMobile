@@ -2,6 +2,7 @@ package com.example.scrapingmobile
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
@@ -18,7 +19,9 @@ class MainActivity : AppCompatActivity() {
         executeButton.setOnClickListener {
             // メインスレッドからHTML通信はできないため、コルーチンで別スレッドを作成
             GlobalScope.launch {
-                val scraping = Scraping(Jsoup.connect("https://ja.wikipedia.org/wiki/メインページ").get())
+//                val scraping = Scraping(Jsoup.connect("https://ja.wikipedia.org/wiki/メインページ").get())
+                val url = findViewById<View>(R.id.inputUrl) as TextInputEditText
+                val scraping = Scraping(Jsoup.connect(url.text.toString()).get())
                 val checkBoxElement = findViewById<View>(R.id.checkBoxElement) as CheckBox
                 if (checkBoxElement.isChecked) {
                     scraping.getInfoByElement()
