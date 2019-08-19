@@ -15,7 +15,12 @@ import org.jsoup.select.Elements
 
 
 class MainActivity : AppCompatActivity() {
+    // TODO:HTMLタグを含めた出力、データのみの出力を選択できるようにする
+    // TODO:ファイル出力出来るようにする
+    // TODO:出力後、resultのデータをクリアする
     companion object {
+        // 全HTMLデータ
+        var allHtml:String? = null
         // 抽出したHTMLデータを保持する
         val result: Elements = Elements()
     }
@@ -31,7 +36,13 @@ class MainActivity : AppCompatActivity() {
                     val scraping = Scraping(Jsoup.connect("https://ja.wikipedia.org/wiki/メインページ").get())
 //                val url = findViewById<View>(R.id.inputUrl) as TextInputEditText
 //                val scraping = Scraping(Jsoup.connect(url.text.toString()).get())
+                    val checkBoxAll = findViewById<View>(R.id.checkBoxAll) as CheckBox
+                    // 「全HTML」のチェックボックスがONのとき
+                    if (checkBoxAll.isChecked) {
+                        allHtml = scraping.getAllHtml()
+                    }
                     val checkBoxElement = findViewById<View>(R.id.checkBoxElement) as CheckBox
+                    // 「要素」のチェックボックスがONのとき
                     if (checkBoxElement.isChecked) {
                         val elements = scraping.getInfoByElement("h2")
 //                    val editTextElement = findViewById<View>(R.id.editTextElement) as EditText
@@ -39,6 +50,7 @@ class MainActivity : AppCompatActivity() {
                         result.addAll(elements)
                     }
                     val checkBoxAttr = findViewById<View>(R.id.checkBoxAttr) as CheckBox
+                    // 「属性」のチェックボックスがONのとき
                     if (checkBoxAttr.isChecked) {
                         val attrs = scraping.getInfoByAttr("href")
 //                    val editTextAttr = findViewById<View>(R.id.editTextAttr) as EditText
@@ -46,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                         result.addAll(attrs)
                     }
                     val checkBoxId = findViewById<View>(R.id.checkBoxId) as CheckBox
+                    // 「ID」のチェックボックスがONのとき
                     if (checkBoxId.isChecked) {
                         val id = scraping.getInfoById("top")
 //                    val editTextId = findViewById<View>(R.id.editTextId) as EditText

@@ -5,9 +5,9 @@ import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
 class Scraping(val document:Document) {
-//    init {
-//        println(document.html())
-//    }
+    fun getAllHtml ():String? {
+        return document.html()
+    }
     fun getInfoByElement (element:String):Elements {
         // 要素の指定
         val elements = document.select(element)

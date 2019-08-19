@@ -14,6 +14,12 @@ class Result : AppCompatActivity() {
         setContentView(R.layout.activity_result)
         val textView = findViewById<View>(R.id.textView) as TextView
         textView.setMovementMethod(ScrollingMovementMethod.getInstance())
+        // 全HTML情報を取得した場合
+        if (MainActivity.allHtml != null) {
+            textView.append(MainActivity.allHtml)
+        }
+        // 出力後、全HTMLデータをクリア
+        MainActivity.allHtml = null
         for (element in MainActivity.result) {
             textView.append("${element.text()}\n")
         }
