@@ -20,8 +20,15 @@ class Result : AppCompatActivity() {
         }
         // 出力後、全HTMLデータをクリア
         MainActivity.allHtml = null
+        // 抽出したHTMLデータを出力
         for (element in MainActivity.result) {
-            textView.append("${element.text()}\n")
+            // タグ付きの場合
+            if (MainActivity.tagSetting == 0) {
+                textView.append("${element.html()}\n")
+                // タグなしの場合
+            } else if (MainActivity.tagSetting == -1) {
+                textView.append("${element.text()}\n")
+            }
         }
         // 出力後、抽出したHTMLデータをクリア
         MainActivity.result.clear()
