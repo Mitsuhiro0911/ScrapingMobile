@@ -51,7 +51,8 @@
             <RadioGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal" android:id="@+id/radioGroup">
+                    android:id="@+id/radioGroup"
+                    android:orientation="horizontal">
                 <RadioButton
                         android:text="タグ付き"
                         android:layout_width="wrap_content"

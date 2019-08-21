@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import org.jsoup.Jsoup
 import android.content.Intent
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import kotlinx.coroutines.*
 import org.jsoup.nodes.Element
@@ -18,7 +19,7 @@ import org.jsoup.select.Elements
 class MainActivity : AppCompatActivity() {
     // TODO:HTMLタグを含めた出力、データのみの出力を選択できるようにする
     // TODO:ファイル出力出来るようにする
-    // TODO:「タグなし選択→抽出→戻る→タグあり選択」を行うと"タグあり"と"タグなし"両方が選択されてしまうバグが発生
+    // TODO:タグ設定のラジオボタンが両方選択されてしまうバグが発生
     companion object {
         // 全HTMLデータ
         var allHtml:String? = null
@@ -32,9 +33,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         // ラジオボタンのIDが動的生成されないよう、固定値をセット
-        val radioGroup = findViewById<View>(R.id.radioGroup) as RadioGroup
-        radioGroup.getChildAt(0).id = 0
-        radioGroup.getChildAt(1).id = -1
+        val taggedFlag = findViewById<View>(R.id.taggedFlag) as RadioButton
+        taggedFlag.id = 0
+        taggedFlag.isChecked = true
+        val noTaggedFlag = findViewById<View>(R.id.noTaggedFlag) as RadioButton
+        noTaggedFlag.id = -1
 
         val executeButton = findViewById<View>(R.id.executeButton)
         executeButton.setOnClickListener {
@@ -43,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 GlobalScope.async {
                     val scraping = Scraping(Jsoup.connect("https://ja.wikipedia.org/wiki/メインページ").get())
                     // 選択されたラジオボタンのidを取得
+                    val radioGroup = findViewById<View>(R.id.radioGroup) as RadioGroup
                     tagSetting = radioGroup.checkedRadioButtonId
                     Log.d("tagSetting", "${tagSetting}")
 //                val url = findViewById<View>(R.id.inputUrl) as TextInputEditText
