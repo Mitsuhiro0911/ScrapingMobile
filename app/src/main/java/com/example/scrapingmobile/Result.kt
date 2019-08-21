@@ -23,5 +23,7 @@ class Result : AppCompatActivity() {
         for (element in MainActivity.result) {
             textView.append("${element.text()}\n")
         }
+        // 出力後、抽出したHTMLデータをクリア
+        MainActivity.result.clear()
     }
 }
