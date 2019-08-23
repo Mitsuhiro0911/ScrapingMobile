@@ -9,15 +9,20 @@ import android.widget.CheckBox
 import android.widget.EditText
 import org.jsoup.Jsoup
 import android.content.Intent
+import android.os.Build
+import android.os.Environment
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import kotlinx.coroutines.*
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
 
 
 class MainActivity : AppCompatActivity() {
-    // TODO:HTMLタグを含めた出力、データのみの出力を選択できるようにする
     // TODO:ファイル出力出来るようにする
     // TODO:タグ設定のラジオボタンが両方選択されてしまうバグが発生
     companion object {
@@ -41,6 +46,9 @@ class MainActivity : AppCompatActivity() {
 
         val executeButton = findViewById<View>(R.id.executeButton)
         executeButton.setOnClickListener {
+            // ファイル書き込み処理
+            writeFile()
+
             runBlocking {
                 // メインスレッドからHTML通信はできないため、コルーチンで別スレッドを作成
                 GlobalScope.async {
@@ -87,6 +95,20 @@ class MainActivity : AppCompatActivity() {
             // Resultページへ遷移
             val intent = Intent(this, Result::class.java)
             startActivityForResult(intent, 0)
+        }
+    }
+
+    fun writeFile () {
+        // APIレベルが19以下だとEnvironment.DIRECTORY_DOCUMENTSを使用できない
+        if (Build.VERSION.SDK_INT >= 23) {
+            val path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
+            val testfile = "testfile.txt"
+            val file = File(path, testfile)
+            val fileOutputStream = FileOutputStream(file, true)
+            val outputStreamWriter = OutputStreamWriter(fileOutputStream)
+            val bw = BufferedWriter(outputStreamWriter)
+            bw.write("aiueo")
+            bw.flush()
         }
     }
 }
