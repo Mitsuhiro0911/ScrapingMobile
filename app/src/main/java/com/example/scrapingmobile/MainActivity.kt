@@ -99,13 +99,13 @@ class MainActivity : AppCompatActivity() {
             val outRadioGroup = findViewById<View>(R.id.outRadioGroup) as RadioGroup
             outModeSetting = outRadioGroup.checkedRadioButtonId
             // 画面出力モードの場合
-            if (outModeSetting == 0) {
+            if (outModeSetting == KbnData.SCREEN_OUT) {
                 // Resultページへ遷移
                 val intent = Intent(this, Result::class.java)
                 startActivityForResult(intent, 0)
             }
             // ファイル出力モードの場合
-            else if (outModeSetting == -1) {
+            else if (outModeSetting == KbnData.FILE_OUT) {
                 writeFile()
             }
         }
@@ -129,10 +129,10 @@ class MainActivity : AppCompatActivity() {
             // 抽出したHTMLデータを出力
             for (element in result) {
                 // タグ付きの場合
-                if (tagSetting == 0) {
+                if (tagSetting == KbnData.TAGGED) {
                     bw.write("${element.html()}\n")
                     // タグなしの場合
-                } else if (tagSetting == -1) {
+                } else if (tagSetting == KbnData.NO_TAGGED) {
                     bw.write("${element.text()}\n")
                 }
             }

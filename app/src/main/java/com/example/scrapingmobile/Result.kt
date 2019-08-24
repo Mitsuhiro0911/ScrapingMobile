@@ -23,10 +23,10 @@ class Result : AppCompatActivity() {
         // 抽出したHTMLデータを出力
         for (element in MainActivity.result) {
             // タグ付きの場合
-            if (MainActivity.tagSetting == 0) {
+            if (MainActivity.tagSetting == KbnData.TAGGED) {
                 textView.append("${element.html()}\n")
                 // タグなしの場合
-            } else if (MainActivity.tagSetting == -1) {
+            } else if (MainActivity.tagSetting == KbnData.NO_TAGGED) {
                 textView.append("${element.text()}\n")
             }
         }
