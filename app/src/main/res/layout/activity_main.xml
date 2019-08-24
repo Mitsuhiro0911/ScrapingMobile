@@ -41,6 +41,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <TextView
+                    android:text="出力モード"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView3"/>
+        </TableRow>
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" android:id="@+id/outRadioGroup">
+                <RadioButton
+                        android:text="画面"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/screenOutFlag" android:layout_weight="1"/>
+                <RadioButton
+                        android:text="ファイル"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/fileOutFlag" android:layout_weight="1"/>
+            </RadioGroup>
+        </TableRow>
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <TextView
                     android:text="タグ設定"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" android:id="@+id/textView2"/>
@@ -51,7 +76,7 @@
             <RadioGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/radioGroup"
+                    android:id="@+id/tagRadioGroup"
                     android:orientation="horizontal">
                 <RadioButton
                         android:text="タグ付き"

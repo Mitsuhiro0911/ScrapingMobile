@@ -2,11 +2,9 @@ package com.example.scrapingmobile
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
-import android.widget.EditText
 import org.jsoup.Jsoup
 import android.content.Intent
 import android.os.Build
@@ -14,7 +12,6 @@ import android.os.Environment
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import kotlinx.coroutines.*
-import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 import java.io.BufferedWriter
 import java.io.File
@@ -30,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         var allHtml:String? = null
         // 抽出したHTMLデータを保持する
         val result: Elements = Elements()
+        // 出力モード設定
+        var outModeSetting = 1
         // タグ設定
         var tagSetting = 1
     }
@@ -37,6 +36,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // ラジオボタンのIDが動的生成されないよう、固定値をセット
+        val screenOutFlag = findViewById<View>(R.id.screenOutFlag) as RadioButton
+        screenOutFlag.id = 0
+        screenOutFlag.isChecked = true
+        val fileOutFlag = findViewById<View>(R.id.fileOutFlag) as RadioButton
+        fileOutFlag.id = -1
+
         // ラジオボタンのIDが動的生成されないよう、固定値をセット
         val taggedFlag = findViewById<View>(R.id.taggedFlag) as RadioButton
         taggedFlag.id = 0
@@ -51,8 +57,8 @@ class MainActivity : AppCompatActivity() {
                 GlobalScope.async {
                     val scraping = Scraping(Jsoup.connect("https://ja.wikipedia.org/wiki/メインページ").get())
                     // 選択されたラジオボタンのidを取得
-                    val radioGroup = findViewById<View>(R.id.radioGroup) as RadioGroup
-                    tagSetting = radioGroup.checkedRadioButtonId
+                    val tagRadioGroup = findViewById<View>(R.id.tagRadioGroup) as RadioGroup
+                    tagSetting = tagRadioGroup.checkedRadioButtonId
                     Log.d("tagSetting", "${tagSetting}")
 //                val url = findViewById<View>(R.id.inputUrl) as TextInputEditText
 //                val scraping = Scraping(Jsoup.connect(url.text.toString()).get())
@@ -88,13 +94,20 @@ class MainActivity : AppCompatActivity() {
                     println(result)
                     // awaitで同期を取る。HTMLデータ取得前にページ遷移することを防ぐ
                 }.await()
-                // ファイル書き込み処理
-                writeFile()
-                delay(10000)
             }
-            // Resultページへ遷移
-            val intent = Intent(this, Result::class.java)
-            startActivityForResult(intent, 0)
+            // 選択されたラジオボタンのidを取得
+            val outRadioGroup = findViewById<View>(R.id.outRadioGroup) as RadioGroup
+            outModeSetting = outRadioGroup.checkedRadioButtonId
+            // 画面出力モードの場合
+            if (outModeSetting == 0) {
+                // Resultページへ遷移
+                val intent = Intent(this, Result::class.java)
+                startActivityForResult(intent, 0)
+            }
+            // ファイル出力モードの場合
+            else if (outModeSetting == -1) {
+                writeFile()
+            }
         }
     }
 
@@ -108,18 +121,18 @@ class MainActivity : AppCompatActivity() {
             val outputStreamWriter = OutputStreamWriter(fileOutputStream)
             val bw = BufferedWriter(outputStreamWriter)
             // 全HTML情報を取得した場合
-            if (MainActivity.allHtml != null) {
-                bw.write(MainActivity.allHtml)
+            if (allHtml != null) {
+                bw.write(allHtml)
             }
             // 出力後、全HTMLデータをクリア
-            MainActivity.allHtml = null
+            allHtml = null
             // 抽出したHTMLデータを出力
-            for (element in MainActivity.result) {
+            for (element in result) {
                 // タグ付きの場合
-                if (MainActivity.tagSetting == 0) {
+                if (tagSetting == 0) {
                     bw.write("${element.html()}\n")
                     // タグなしの場合
-                } else if (MainActivity.tagSetting == -1) {
+                } else if (tagSetting == -1) {
                     bw.write("${element.text()}\n")
                 }
             }
