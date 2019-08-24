@@ -2,7 +2,6 @@ package com.example.scrapingmobile
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import org.jsoup.Jsoup
@@ -53,13 +52,12 @@ class MainActivity : AppCompatActivity() {
         val executeButton = findViewById<View>(R.id.executeButton)
         executeButton.setOnClickListener {
             runBlocking {
-                // メインスレッドからHTML通信はできないため、コルーチンで別スレッドを作成
+                // メインスレッドからHTTP通信はできないため、コルーチンで別スレッドを作成
                 GlobalScope.async {
                     val scraping = Scraping(Jsoup.connect("https://ja.wikipedia.org/wiki/メインページ").get())
                     // 選択されたラジオボタンのidを取得
                     val tagRadioGroup = findViewById<View>(R.id.tagRadioGroup) as RadioGroup
                     tagSetting = tagRadioGroup.checkedRadioButtonId
-                    Log.d("tagSetting", "${tagSetting}")
 //                val url = findViewById<View>(R.id.inputUrl) as TextInputEditText
 //                val scraping = Scraping(Jsoup.connect(url.text.toString()).get())
                     val checkBoxAll = findViewById<View>(R.id.checkBoxAll) as CheckBox
