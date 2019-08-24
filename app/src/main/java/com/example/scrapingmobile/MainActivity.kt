@@ -46,9 +46,6 @@ class MainActivity : AppCompatActivity() {
 
         val executeButton = findViewById<View>(R.id.executeButton)
         executeButton.setOnClickListener {
-            // ファイル書き込み処理
-            writeFile()
-
             runBlocking {
                 // メインスレッドからHTML通信はできないため、コルーチンで別スレッドを作成
                 GlobalScope.async {
@@ -91,6 +88,9 @@ class MainActivity : AppCompatActivity() {
                     println(result)
                     // awaitで同期を取る。HTMLデータ取得前にページ遷移することを防ぐ
                 }.await()
+                // ファイル書き込み処理
+                writeFile()
+                delay(10000)
             }
             // Resultページへ遷移
             val intent = Intent(this, Result::class.java)
@@ -107,7 +107,24 @@ class MainActivity : AppCompatActivity() {
             val fileOutputStream = FileOutputStream(file, true)
             val outputStreamWriter = OutputStreamWriter(fileOutputStream)
             val bw = BufferedWriter(outputStreamWriter)
-            bw.write("aiueo")
+            // 全HTML情報を取得した場合
+            if (MainActivity.allHtml != null) {
+                bw.write(MainActivity.allHtml)
+            }
+            // 出力後、全HTMLデータをクリア
+            MainActivity.allHtml = null
+            // 抽出したHTMLデータを出力
+            for (element in MainActivity.result) {
+                // タグ付きの場合
+                if (MainActivity.tagSetting == 0) {
+                    bw.write("${element.html()}\n")
+                    // タグなしの場合
+                } else if (MainActivity.tagSetting == -1) {
+                    bw.write("${element.text()}\n")
+                }
+            }
+            // 出力後、抽出したHTMLデータをクリア
+            MainActivity.result.clear()
             bw.flush()
         }
     }
