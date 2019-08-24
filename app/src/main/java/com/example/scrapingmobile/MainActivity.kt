@@ -1,5 +1,6 @@
 package com.example.scrapingmobile
 
+import android.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -137,6 +138,10 @@ class MainActivity : AppCompatActivity() {
             // 出力後、抽出したHTMLデータをクリア
             MainActivity.result.clear()
             bw.flush()
+            // ファイル出力完了のアラートを表示
+            val alert = AlertDialog.Builder(this)
+            alert.setMessage("ファイル出力が完了しました")
+            alert.show()
         }
     }
 }
