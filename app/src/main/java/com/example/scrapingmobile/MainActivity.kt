@@ -111,12 +111,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun writeFile () {
+    private fun writeFile () {
         // APIレベルが19以下だとEnvironment.DIRECTORY_DOCUMENTSを使用できない
         if (Build.VERSION.SDK_INT >= 23) {
             val path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-            val testfile = "testfile.txt"
-            val file = File(path, testfile)
+            val fileName = "HTML抽出結果.txt"
+            val file = File(path, fileName)
             val fileOutputStream = FileOutputStream(file)
             val outputStreamWriter = OutputStreamWriter(fileOutputStream)
             val bw = BufferedWriter(outputStreamWriter)
