@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
             val path = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
             val testfile = "testfile.txt"
             val file = File(path, testfile)
-            val fileOutputStream = FileOutputStream(file, true)
+            val fileOutputStream = FileOutputStream(file)
             val outputStreamWriter = OutputStreamWriter(fileOutputStream)
             val bw = BufferedWriter(outputStreamWriter)
             // 全HTML情報を取得した場合
